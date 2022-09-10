@@ -2,15 +2,22 @@ import { MongoClient } from "mongodb";
 import fs from "fs";
 import dJSON from "dirty-json";
 
-const dbHost = process.env.DBHOST || "localhost";
+const MONGO_HOST = process.env.MONGO_HOST;
 
-const dbName = "db_name";
-const firstName = "first";
-const secondName = "second";
-const thirdName = "third";
+const MONGO_USERNAME = process.env.MONGO_USERNAME;
+const MONGO_PASSWORD = process.env.MONGO_PASSWORD;
+const MONGO_PORT = process.env.MONGO_PORT;
+
+const dbName = process.env.DBNAME;
+const firstName = process.env.FIRSTNAME;
+const secondName = process.env.SECONDNAME;
+const thirdName = process.env.THIRDNAME;
+
+const FIRST_FILE_PATH = process.env.FIRST_FILE_PATH;
+const SECOND_FILE_PATH = process.env.SECOND_FILE_PATH;
 
 MongoClient.connect(
-  `mongodb://root:example@${dbHost}:27017`,
+  `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOST}:${MONGO_PORT}`,
   async (err, client) => {
     if (err) {
       console.log("Connection error: ", err);
@@ -37,11 +44,11 @@ const refillDB = async (client, dbName) => {
   const db = client.db(dbName);
 
   const first = await db.createCollection(firstName);
-  const firstData = dJSON.parse(fs.readFileSync("data/first.json"));
+  const firstData = dJSON.parse(fs.readFileSync(FIRST_FILE_PATH));
   await first.insertMany(firstData);
 
   const second = await db.createCollection(secondName);
-  const secondData = dJSON.parse(fs.readFileSync("data/second.json"));
+  const secondData = dJSON.parse(fs.readFileSync(SECOND_FILE_PATH));
   await second.insertMany(secondData);
   return db;
 };
