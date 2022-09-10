@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "env DBNAME=mongo node src/index.js",
+    "start": "env DBHOST=mongo node src/index.js",
     "dev": "node src/index.js"
   },
   "author": "",
